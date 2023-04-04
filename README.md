@@ -1,1 +1,1 @@
-# starlight-kakao
+# starlight-server
