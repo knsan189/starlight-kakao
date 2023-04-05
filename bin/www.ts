@@ -5,12 +5,13 @@
  * Module dependencies.
  */
 
-import app from "../app.js";
+
 import Debug from "debug";
 import * as http from "http";
 import process from "process";
+import app from "../src/app.js";
 
-const debug = Debug("starlight:server");
+const debug = Debug("starlightKakao");
 process.title = "starlightKakao";
 
 /**
