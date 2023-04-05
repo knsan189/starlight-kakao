@@ -1,5 +1,5 @@
 #!/bin/bash
 
-pgrep starlight-kakao | xargs kill
+pgrep starlightKakao | xargs kill
 
 exit 0
