@@ -34,7 +34,7 @@ const MSG_CHAT = ["/대화", "별빛"];
 MessageRouter.post("/", async (req, res) => {
   try {
     const { msg, sender }: MessageRequest = req.body;
-    console.log(`[${new Date().toLocaleString()}]${sender} : ${msg}`);
+    console.log(`[${new Date().toLocaleString()}] ${sender} : ${msg}`);
 
     if (MSG_CHAT.some((item) => msg.indexOf(item) === 0)) {
       const keyword = MSG_CHAT.find((item) => msg.indexOf(item) === 0) || "";
@@ -136,7 +136,7 @@ MessageRouter.post("/", async (req, res) => {
         message += `${getParsedSender(member.nickname)}님 `;
       });
       message += "접속해 계시는거 같아요 !";
-      return res.send(message);
+      return res.send({ reply: message });
     }
 
     if (!msg.startsWith(prefix)) return;
