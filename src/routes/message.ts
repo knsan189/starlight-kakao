@@ -1,5 +1,4 @@
 import { Router } from "express";
-import log4js from "log4js";
 import PingpongApi from "../apis/pingpong.api.js";
 import DiscordApi from "../apis/discord.api.js";
 import { format, formatDistanceToNow } from "date-fns";
@@ -15,7 +14,6 @@ declare global {
 
 const prefix = "/";
 const MessageRouter = Router();
-const logger = log4js.getLogger("message");
 
 const FortuneMap = new Map<string, Fortune>();
 let timestamp = new Date();
@@ -36,6 +34,7 @@ const MSG_CHAT = ["/대화", "별빛"];
 MessageRouter.post("/", async (req, res) => {
   try {
     const { msg, sender }: MessageRequest = req.body;
+    console.log(`[${new Date().toLocaleString()}]${sender} : ${msg}`);
 
     if (MSG_CHAT.some((item) => msg.indexOf(item) === 0)) {
       const keyword = MSG_CHAT.find((item) => msg.indexOf(item) === 0) || "";
@@ -313,9 +312,9 @@ MessageRouter.post("/", async (req, res) => {
       return res.send({ reply: message });
     }
 
-    return res.send("a");
+    return res.send("success");
   } catch (error) {
-    logger.error(error);
+    console.log(error);
     return res.send({ status: "error", reply: "에러났어요 ㅠ" + error });
   }
 });
