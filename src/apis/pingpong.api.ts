@@ -34,7 +34,7 @@ export default class PingpongApi {
         try {
           const response = await PingpongApi.instance({
             method: "POST",
-            url: `/${sender}`,
+            url: `/${encodeURIComponent(sender)}`,
             data: {
               request: { query: msg },
             },

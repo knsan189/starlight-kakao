@@ -28,7 +28,7 @@ export default class DiscordApi {
         try {
           const response = await DiscordApi.instance({
             method: "GET",
-            url: `/list/${nickname}`,
+            url: `/list/${encodeURIComponent(nickname)}`,
           });
           resolve(response.data);
         } catch (error) {
