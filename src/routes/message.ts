@@ -57,7 +57,7 @@ MessageRouter.post("/", async (req, res) => {
         (reply) => reply.text && !reply.text.includes("https://pingpong.us"),
       );
 
-      return res.send({ reply: parsedReplies[0], secondReply: parsedReplies[1] });
+      return res.send({ reply: parsedReplies[0].text, secondReply: parsedReplies[1]?.text });
     }
 
     if (MSG_REACTION.some((item) => msg.includes(item))) {
