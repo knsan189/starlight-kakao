@@ -53,12 +53,11 @@ MessageRouter.post("/", async (req, res) => {
 
       const { replies } = response;
 
-      for (let i = 0; i < replies.length; i += 1) {
-        if (replies[i].text && !replies[i].text.includes("https://pingpong.us")) {
-          res.send(replies[i].text);
-        }
-      }
-      return;
+      const parsedReplies = replies.filter(
+        (reply) => reply.text && !reply.text.includes("https://pingpong.us"),
+      );
+
+      return res.send({ reply: parsedReplies[0], secondReply: parsedReplies[1] });
     }
 
     if (MSG_REACTION.some((item) => msg.includes(item))) {
