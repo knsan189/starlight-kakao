@@ -311,6 +311,10 @@ MessageRouter.post("/", async (req, res) => {
       return res.send({ reply: message });
     }
 
+    if (cmd && cmd.length >= 2) {
+      return res.send({ reply: "맨앞에 /만 붙이신다고 해서 제가 막 대답해드리지는 않거든요" });
+    }
+
     return res.send("success");
   } catch (error) {
     console.log(error);
