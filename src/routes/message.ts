@@ -312,7 +312,10 @@ MessageRouter.post("/", async (req, res) => {
     }
 
     if (cmd && cmd.length >= 2) {
-      return res.send({ reply: "맨앞에 /만 붙이신다고 해서 제가 막 대답해드리지는 않거든요" });
+      return res.send({
+        reply: "맨 앞에 /만 붙이신다고 해서 제가 막 대답해드리지는 않거든요",
+        secondReply: "혹시 새로운 기능이 원하시는건가요? 그럼 우리 같이 javascript 배워 볼까요?",
+      });
     }
 
     return res.send("success");
