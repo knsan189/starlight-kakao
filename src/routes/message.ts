@@ -278,7 +278,7 @@ MessageRouter.post("/", async (req, res) => {
           message += ` - ${item.Name}`;
 
           if (Elixir) {
-            message += `(${Elixir[0]}, ${Elixir[1]})`;
+            message += `\n  (${Elixir[0]}, ${Elixir[1]})\n`;
           }
           message += "\n";
         }
