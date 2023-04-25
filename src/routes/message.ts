@@ -14,6 +14,7 @@ declare global {
 
 const prefix = "/";
 const MessageRouter = Router();
+const tagRegex = /<[^>]*>?/g;
 
 const FortuneMap = new Map<string, Fortune>();
 let timestamp = new Date();
@@ -27,6 +28,13 @@ String.prototype.format = function (...args: string[]) {
     return typeof args[index] === "undefined" ? match : args[index];
   });
 };
+
+function parseElilxer(text: string) {
+  return text
+    .replace(tagRegex, "")
+    .replace(/\[(.*?)\]/g, "")
+    .trim();
+}
 
 const MSG_REACTION = ["안녕하세", "안녕 하세", "좋은 아침", "좋은아침", "굿모", "굳모"];
 const MSG_CHAT = ["/대화", "별빛"];
@@ -223,9 +231,21 @@ MessageRouter.post("/", async (req, res) => {
 
       const { engravings, equipment, gems, profile } = await LostArkApi.getUser(userName);
 
-      if (!profile) {
-        return res.send({ reply: "❌ 해당 유저 정보가 존재하지 않습니다." });
+      if (!profile || !equipment || !gems || !engravings) {
+        return res.send({ reply: "❌ 해당 유저 정보가 존재하지 않는데요?" });
       }
+
+      const tooltips = equipment.map((eq) => {
+        const target = JSON.parse(eq.Tooltip).Element_008?.value.Element_000?.contentStr;
+        if (target) {
+          return [
+            parseElilxer(target.Element_000.contentStr.split("<br>")[0]),
+            parseElilxer(target.Element_001.contentStr.split("<br>")[0]),
+          ];
+        } else {
+          return undefined;
+        }
+      });
 
       let message = "";
       message += `@${profile.CharacterName} / ${profile.GuildName}\n`;
@@ -245,7 +265,7 @@ MessageRouter.post("/", async (req, res) => {
       });
       message += `\n`;
       message += `⚔ [ 장비 ] ⚔\n`;
-      equipment?.forEach((item) => {
+      equipment?.forEach((item, index) => {
         if (
           item.Type === "무기" ||
           item.Type === "투구" ||
@@ -254,7 +274,13 @@ MessageRouter.post("/", async (req, res) => {
           item.Type === "장갑" ||
           item.Type === "어깨"
         ) {
-          message += ` - ${item.Name}\n`;
+          const Elixir = tooltips[index];
+          message += ` - ${item.Name}`;
+
+          if (Elixir) {
+            message += `(${Elixir[0]}, ${Elixir[1]})`;
+          }
+          message += "\n";
         }
       });
       message += `\n`;
