@@ -276,9 +276,8 @@ MessageRouter.post("/", async (req, res) => {
         ) {
           const Elixir = tooltips[index];
           message += ` - ${item.Name}`;
-
           if (Elixir) {
-            message += `\n  (${Elixir[0]}, ${Elixir[1]})\n`;
+            message += `\n  (${Elixir[0]}, ${Elixir[1]})`;
           }
           message += "\n";
         }
