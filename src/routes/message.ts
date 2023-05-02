@@ -239,8 +239,8 @@ MessageRouter.post("/", async (req, res) => {
         const target = JSON.parse(eq.Tooltip).Element_008?.value.Element_000?.contentStr;
         if (target) {
           return [
-            parseElilxer(target.Element_000.contentStr.split("<br>")[0]),
-            parseElilxer(target.Element_001.contentStr.split("<br>")[0]),
+            parseElilxer(target.Element_000?.contentStr.split("<br>")[0] || ""),
+            parseElilxer(target.Element_001?.contentStr.split("<br>")[0] || ""),
           ];
         } else {
           return undefined;
@@ -275,9 +275,11 @@ MessageRouter.post("/", async (req, res) => {
           item.Type === "어깨"
         ) {
           const Elixir = tooltips[index];
+
           message += ` - ${item.Name}`;
-          if (Elixir) {
-            message += `\n  (${Elixir[0]}, ${Elixir[1]})`;
+          if (Elixir && item.Type !== "무기") {
+            console.log(Elixir);
+            message += `\n (${Elixir[0]}, ${Elixir[1]})`;
           }
           message += "\n";
         }
