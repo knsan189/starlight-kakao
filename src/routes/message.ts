@@ -42,6 +42,7 @@ const MSG_CHAT = ["/대화", "별빛"];
 MessageRouter.post("/", async (req, res) => {
   try {
     const { msg, sender }: MessageRequest = req.body;
+    // eslint-disable-next-line no-console
     console.log(`[${new Date().toLocaleString()}] ${sender} : ${msg}`);
 
     if (MSG_CHAT.some((item) => msg.indexOf(item) === 0)) {
@@ -231,11 +232,11 @@ MessageRouter.post("/", async (req, res) => {
 
       const { engravings, equipment, gems, profile } = await LostArkApi.getUser(userName);
 
-      if (!profile || !equipment || !gems || !engravings) {
+      if (!profile) {
         return res.send({ reply: "❌ 해당 유저 정보가 존재하지 않는데요?" });
       }
 
-      const tooltips = equipment.map((eq) => {
+      const tooltips = equipment?.map((eq) => {
         const target = JSON.parse(eq.Tooltip).Element_008?.value.Element_000?.contentStr;
         if (target) {
           return [
@@ -274,12 +275,13 @@ MessageRouter.post("/", async (req, res) => {
           item.Type === "장갑" ||
           item.Type === "어깨"
         ) {
-          const Elixir = tooltips[index];
-
-          message += ` - ${item.Name}`;
+          const Elixir = tooltips?.[index];
+          message += `${item.Name}`;
           if (Elixir && item.Type !== "무기") {
-            console.log(Elixir);
-            message += `\n (${Elixir[0]}, ${Elixir[1]})`;
+            message += `\n ${Elixir[0]}`;
+            if (Elixir[1]) {
+              message += `, ${Elixir[1]}`;
+            }
           }
           message += "\n";
         }
@@ -347,7 +349,8 @@ MessageRouter.post("/", async (req, res) => {
 
     return res.send("success");
   } catch (error) {
-    console.log(error);
+    // eslint-disable-next-line no-console
+    console.error(error);
     return res.send({ status: "error", reply: "에러났어요 ㅠ" + error });
   }
 });
