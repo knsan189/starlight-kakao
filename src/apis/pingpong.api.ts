@@ -1,6 +1,7 @@
 import axios from "axios";
+import { PINPONG_BASE_URL, PINPONG_KEY } from "../config/const.js";
 
-const KEY = `Basic a2V5OjkxZjYwNWE3ZWM1ZjcxNTg3NDZmMjY3MjNlNTZlM2Qz`;
+const KEY = `Basic ${PINPONG_KEY}`;
 
 interface ChatResponse {
   response:
@@ -21,8 +22,7 @@ interface ChatResponse {
 }
 export default class PingpongApi {
   private static instance = axios.create({
-    baseURL:
-      "https://builder.pingpong.us/api/builder/62b50ccce4b0d7787e95ffa7/integration/v0.2/custom",
+    baseURL: PINPONG_BASE_URL,
     headers: {
       Authorization: KEY,
     },
