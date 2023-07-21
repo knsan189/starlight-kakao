@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Router } from "express";
 import PingpongApi from "../apis/pingpong.api.js";
 import DiscordApi from "../apis/discord.api.js";
@@ -38,11 +39,12 @@ function parseElilxer(text: string) {
 
 const MSG_REACTION = ["안녕하세", "안녕 하세", "좋은 아침", "좋은아침", "굿모", "굳모"];
 const MSG_CHAT = ["/대화", "별빛"];
+const MSG_COMMAND_LIST = ["/명령어", "/도움말", "/?"];
 
 MessageRouter.post("/", async (req, res) => {
   try {
     const { msg, sender }: MessageRequest = req.body;
-    // eslint-disable-next-line no-console
+
     console.log(`[${new Date().toLocaleString()}] ${sender} : ${msg}`);
 
     if (MSG_CHAT.some((item) => msg.indexOf(item) === 0)) {
@@ -340,10 +342,33 @@ MessageRouter.post("/", async (req, res) => {
       return res.send({ reply: message });
     }
 
-    if (cmd && cmd.length >= 2) {
+    if (cmd && (cmd.length >= 2 || MSG_COMMAND_LIST.some((msg) => msg.includes(cmd)))) {
+      const message =
+        "⌨ 현재 사용 가능한 명령어는" +
+        `\n 1. /유저 닉네임` +
+        "\n - 유저정보를 가지고 옵니다." +
+        `\n 2. /운세` +
+        "\n - 오늘 나의 게임 운을 확인해 볼 수 있어요." +
+        `\n 3. /명령어, /?` +
+        "\n - 전체 명령어를 확인합니다." +
+        `\n 4. /도비스` +
+        "\n - 이번주 도전 어비스 던전을 확인 할 수 있어요." +
+        `\n 5. /도가토` +
+        "\n - 이번주 도전 가디언 토벌을 확인 할수 있어요." +
+        `\n 6. /거래소 아이템이름` +
+        "\n - 거래소에 등록되어 있는 아이템의 가격을 확인 할 수 있어요. " +
+        "\n ※ ex) /거래소 원한 각인서" +
+        `\n 7. /경매장 아이템이름` +
+        "\n - 거래소에 등록되어 있는 아이템의 가격을 확인 할 수 있어요. 현재는 보석만 확인 가능해요." +
+        "\n ※ ex) /거래소 10레벨 멸화" +
+        `\n 8. 디코 누구` +
+        "\n - 현재 디스코드방에 접속중인 길드원 목록을 확인 할 수 있어요." +
+        `\n` +
+        `\n 📌 주의사항` +
+        `\n 너무 자주 쓰시면 카카오에서 절 쫓아낼수도 있어요. 😪`;
+
       return res.send({
-        reply: "맨 앞에 /만 붙이신다고 해서 제가 막 대답해드리지는 않거든요",
-        secondReply: "혹시 새로운 기능이 원하시는건가요? 그럼 우리 같이 javascript 배워 볼까요?",
+        reply: message,
       });
     }
 
