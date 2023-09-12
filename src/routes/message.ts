@@ -38,7 +38,6 @@ function parseElilxer(text: string) {
 }
 
 const MSG_REACTION = ["안녕하세", "안녕 하세", "좋은 아침", "좋은아침", "굿모", "굳모"];
-const MSG_CHAT = ["/대화", "별빛"];
 const MSG_COMMAND_LIST = ["/명령어", "/도움말", "/?"];
 
 MessageRouter.post("/", async (req, res) => {
@@ -46,30 +45,6 @@ MessageRouter.post("/", async (req, res) => {
     const { msg, sender }: MessageRequest = req.body;
 
     console.log(`[${new Date().toLocaleString()}] ${sender} : ${msg}`);
-
-    if (MSG_CHAT.some((item) => msg.indexOf(item) === 0)) {
-      const keyword = MSG_CHAT.find((item) => msg.indexOf(item) === 0) || "";
-      const parsedSender = sender.split("/")[0].trim();
-      const parsedMsg = msg.replace(keyword, "");
-
-      if (!parsedMsg.length) {
-        return res.send("네? 왜 말을 안하세용");
-      }
-
-      const { response } = await PingpongApi.chat(parsedMsg, parsedSender);
-
-      if (typeof response === "string") {
-        return res.send("이런말 몰라요 ㅠㅠ");
-      }
-
-      const { replies } = response;
-
-      const parsedReplies = replies.filter(
-        (reply) => reply.text && !reply.text.includes("https://pingpong.us"),
-      );
-
-      return res.send({ reply: parsedReplies[0].text, secondReply: parsedReplies[1]?.text });
-    }
 
     if (MSG_REACTION.some((item) => msg.includes(item))) {
       const parsedSender = sender.split("/")[0].trim();
