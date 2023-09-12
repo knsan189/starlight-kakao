@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { Router } from "express";
-import PingpongApi from "../apis/pingpong.api.js";
 import DiscordApi from "../apis/discord.api.js";
 import { format, formatDistanceToNow } from "date-fns";
 import ko from "date-fns/locale/ko/index.js";
@@ -48,24 +47,7 @@ MessageRouter.post("/", async (req, res) => {
 
     if (MSG_REACTION.some((item) => msg.includes(item))) {
       const parsedSender = sender.split("/")[0].trim();
-      const { response } = await PingpongApi.chat(msg, parsedSender);
-
-      if (typeof response === "string") {
-        return res.send("이런말 몰라요 ㅠㅠ");
-      }
-
-      const { replies } = response;
-
-      let reply = "";
-
-      for (let i = 0; i < replies.length; i += 1) {
-        if (replies[i].text && !replies[i].text.includes("https://pingpong.us")) {
-          reply = replies[i].text;
-          break;
-        }
-      }
-
-      return res.send(`${parsedSender}님 ${reply}`);
+      return res.send(`${parsedSender}님 안녕안녕하세요 !`);
     }
 
     if (msg.includes("승호") && msg.includes("언제")) {
