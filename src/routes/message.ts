@@ -305,6 +305,13 @@ MessageRouter.post("/", async (req, res) => {
       return res.send({ reply: message });
     }
 
+    if (cmd === "사이트") {
+      return res.send({
+        reply: "별빛노을.com 에서 길드 레이드 신청하시면. 길마님이 소원들어 주신대요",
+        secondReply: "아 잘 들어주시기만 하신대요 😪 ",
+      });
+    }
+
     if (cmd === "레이드목록" || cmd === "레이드일정") {
       const response = await RaidApi.getRaidList();
       let reply = "📌 이번주 레이드 일정입니다 \n";
@@ -320,7 +327,7 @@ MessageRouter.post("/", async (req, res) => {
       const raidNum = Number(msg.replace("/레이드상세", "").trim());
 
       if (!raidNum) {
-        return res.send({ reply: "레이드상세 조회는 숫자로만 할수 있어용." });
+        return res.send({ reply: "레이드상세 조회는 숫자로만 할수 있어용. 찡긋" });
       }
 
       const response = await RaidApi.getRaidDetail(raidNum);
@@ -398,6 +405,8 @@ MessageRouter.post("/", async (req, res) => {
         "\n - 현재 레이드 게시판에 등록되어있는 레이드 목록을 확인 할 수 있어요" +
         `\n 10. /레이드상세 번호` +
         "\n - 해당 레이드의 참가 인원을 확인해 볼 수 있어요" +
+        `\n 11. /사이트` +
+        "\n - 별빛노을.com 에서 레이드 신청하세요." +
         `\n` +
         `\n 📌 주의사항` +
         `\n 너무 자주 쓰시면 카카오에서 절 쫓아낼수도 있어요. 😪`;
