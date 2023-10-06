@@ -328,7 +328,7 @@ MessageRouter.post("/", async (req, res) => {
       }
 
       let reply = `${raidNum}. ${response.rade_title} 레이드 인원입니다.\n`;
-      reply += `출발일정 : ${response.rade_time}`;
+      reply += `출발일정 :${response.rade_date} ${response.rade_time}\n`;
 
       response.data.forEach((user) => {
         reply += "\n";
@@ -336,8 +336,33 @@ MessageRouter.post("/", async (req, res) => {
       });
 
       if (reply.includes("로즈")) {
-        reply += "\n\n";
-        reply += "호오.. 승호님이 포함되어있는 레이드군요.. 공대원 분들 힘내세요 !";
+        return res.send({
+          reply,
+          secondReply:
+            "호오.. 승호님이 포함되어있는 레이드 같아보이는군요.. 공대원 분들 힘내세요 !",
+        });
+      }
+
+      if (reply.includes("폰")) {
+        return res.send({
+          reply,
+          secondReply: "아만지부장님이 참가하시는 레이드입니다. 다들 조심하세요 !",
+        });
+      }
+
+      if (reply.includes("랑가")) {
+        return res.send({
+          reply,
+          secondReply: "별빛노을의 박보검과 함께하는 레이드입니다. 싸인 받을 준비는 되셨나요?",
+        });
+      }
+
+      if (reply.includes("토끼")) {
+        return res.send({
+          reply,
+          secondReply:
+            "희진님 아이스 아메리카노 따뜻하게 한잔 부탁드려용. 아니면 차가운 핫초코 한잔이요",
+        });
       }
 
       return res.send({ reply });
