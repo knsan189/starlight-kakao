@@ -5,6 +5,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import ko from "date-fns/locale/ko/index.js";
 import LostArkApi from "../apis/lostark.api.js";
 import FortuneApi from "../apis/fortune.api.js";
+import RaidApi from "../apis/raid.api.js";
 
 declare global {
   interface String {
@@ -338,6 +339,15 @@ MessageRouter.post("/", async (req, res) => {
         }
       });
       return res.send({ reply: message });
+    }
+
+    if (cmd === "레이드목록" || cmd === "레이드일정") {
+      const response = await RaidApi.getRaidList();
+      let reply = "이번주 레이드 일정입니다 \n\n";
+      response.forEach((raid) => {
+        reply += `${raid.rds_no}. ${raid.rade_title} - ${raid.rade_date} ${raid.rade_time} (${raid.rade_people}/${raid.rade_participants})\n`;
+      });
+      return res.send({ reply });
     }
 
     if (cmd && cmd.length >= 2) {
