@@ -40,6 +40,11 @@ function parseElilxer(text: string) {
 const MSG_REACTION = ["안녕", "좋은 아침", "좋은아침", "굿모", "굳모"];
 const MSG_COMMAND_LIST = ["/명령어", "/도움말", "/?"];
 
+const formatDateTime = (dateString: string) =>
+  format(new Date(dateString), "MM-dd(eee) HH시 mm분", {
+    locale: ko,
+  });
+
 MessageRouter.post("/", async (req, res) => {
   try {
     const { msg, sender }: MessageRequest = req.body;
@@ -306,7 +311,7 @@ MessageRouter.post("/", async (req, res) => {
       response.forEach((raid) => {
         reply += "\n";
         reply += `${raid.rds_no}. ${raid.rade_title}(${raid.rade_participants}/${raid.rade_people})\n`;
-        reply += `출발 : ${raid.rade_date} ${raid.rade_time}\n`;
+        reply += `출발 : ${formatDateTime(`${raid.rade_date} ${raid.rade_time}`)}\n`;
       });
       return res.send({ reply });
     }
@@ -328,7 +333,7 @@ MessageRouter.post("/", async (req, res) => {
       }
 
       let reply = `${raidNum}. ${response.rade_title} 레이드 인원입니다.\n`;
-      reply += `출발일정 :${response.rade_date} ${response.rade_time}\n`;
+      reply += `출발일정 : ${formatDateTime(`${response.rade_date} ${response.rade_time}`)}\n`;
 
       response.data.forEach((user) => {
         reply += "\n";
