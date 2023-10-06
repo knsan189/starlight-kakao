@@ -36,7 +36,7 @@ function parseElilxer(text: string) {
     .trim();
 }
 
-const MSG_REACTION = ["안녕하세", "안녕 하세", "좋은 아침", "좋은아침", "굿모", "굳모"];
+const MSG_REACTION = ["안녕", "좋은 아침", "좋은아침", "굿모", "굳모"];
 const MSG_COMMAND_LIST = ["/명령어", "/도움말", "/?"];
 
 MessageRouter.post("/", async (req, res) => {
@@ -47,7 +47,7 @@ MessageRouter.post("/", async (req, res) => {
 
     if (MSG_REACTION.some((item) => msg.includes(item))) {
       const parsedSender = sender.split("/")[0].trim();
-      return res.send(`${parsedSender}님 안녕안녕하세요 !`);
+      return res.send({ repley: `${parsedSender}님 안녕안녕하세요 !` });
     }
 
     if (msg.includes("승호") && msg.includes("언제")) {
