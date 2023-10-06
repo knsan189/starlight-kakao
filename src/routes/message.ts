@@ -328,7 +328,7 @@ MessageRouter.post("/", async (req, res) => {
       if (!response.data || !response.rade_date) {
         const parsedSender = sender.split("/")[0].trim();
         return res.send({
-          reply: `레이드번호 ${raidNum}는 등록 안된 레이드인거 같은데요? 지금 절 시험하시는건가요. ${parsedSender}님!?`,
+          reply: `레이드번호 ${raidNum}는 등록 안된 레이드인거 같은데요? 지금 절 시험하시는건가요. ${parsedSender}님!? 😪`,
         });
       }
 
@@ -344,7 +344,7 @@ MessageRouter.post("/", async (req, res) => {
         return res.send({
           reply,
           secondReply:
-            "호오.. 승호님이 포함되어있는 레이드 같아보이는군요.. 공대원 분들 힘내세요 !",
+            "호오.. 승호님이 포함되어있는 레이드 같아보이는군요.. 공대원 분들 힘내세요 ! 😪",
         });
       }
 
@@ -358,7 +358,7 @@ MessageRouter.post("/", async (req, res) => {
       if (reply.includes("랑가")) {
         return res.send({
           reply,
-          secondReply: "별빛노을의 박보검과 함께하는 레이드입니다. 싸인 받을 준비는 되셨나요?",
+          secondReply: "별빛노을의 💎박보검💎과 함께하는 레이드입니다. 싸인 받을 준비는 되셨나요?",
         });
       }
 
@@ -394,6 +394,10 @@ MessageRouter.post("/", async (req, res) => {
         "\n ※ ex) /거래소 10레벨 멸화" +
         `\n 8. 디코 누구` +
         "\n - 현재 디스코드방에 접속중인 길드원 목록을 확인 할 수 있어요." +
+        `\n 9. /레이드목록, /레이드일정` +
+        "\n - 현재 레이드 게시판에 등록되어있는 레이드 목록을 확인 할 수 있어요" +
+        `\n 10. /레이드상세 번호` +
+        "\n - 해당 레이드의 참가 인원을 확인해 볼 수 있어요" +
         `\n` +
         `\n 📌 주의사항` +
         `\n 너무 자주 쓰시면 카카오에서 절 쫓아낼수도 있어요. 😪`;
