@@ -24,9 +24,9 @@ interface RaidUser {
 
 interface RaidDetail {
   rade_title: string;
-  rade_date: string;
+  rade_date?: string;
   rade_time: string;
-  data: RaidUser[];
+  data?: RaidUser[];
 }
 
 const instance = axios.create({

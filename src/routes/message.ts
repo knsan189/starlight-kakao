@@ -302,12 +302,44 @@ MessageRouter.post("/", async (req, res) => {
 
     if (cmd === "레이드목록" || cmd === "레이드일정") {
       const response = await RaidApi.getRaidList();
-      let reply = "이번주 레이드 일정입니다 \n";
+      let reply = "📌 이번주 레이드 일정입니다 \n";
       response.forEach((raid) => {
         reply += "\n";
         reply += `${raid.rds_no}. ${raid.rade_title}(${raid.rade_participants}/${raid.rade_people})\n`;
-        reply += `출발일정 : ${raid.rade_date} ${raid.rade_time}\n`;
+        reply += `출발 : ${raid.rade_date} ${raid.rade_time}\n`;
       });
+      return res.send({ reply });
+    }
+
+    if (cmd === "레이드상세") {
+      const raidNum = Number(msg.replace("/레이드상세", "").trim());
+
+      if (!raidNum) {
+        return res.send({ reply: "레이드상세 조회는 숫자로만 할수 있어용." });
+      }
+
+      const response = await RaidApi.getRaidDetail(raidNum);
+
+      if (!response.data || !response.rade_date) {
+        const parsedSender = sender.split("/")[0].trim();
+        return res.send({
+          reply: `레이드번호 ${raidNum}는 등록 안된 레이드인거 같은데요? 지금 절 시험하시는건가요. ${parsedSender}님!?`,
+        });
+      }
+
+      let reply = `${raidNum}. ${response.rade_title} 레이드 인원입니다.\n`;
+      reply += `출발일정 : ${response.rade_time}`;
+
+      response.data.forEach((user) => {
+        reply += "\n";
+        reply += `[${user.chartor_job}] ${user.chartor_name} (${user.chartor_itemlevel})`;
+      });
+
+      if (reply.includes("로즈")) {
+        reply += "\n\n";
+        reply += "호오.. 승호님이 포함되어있는 레이드군요.. 공대원 분들 힘내세요 !";
+      }
+
       return res.send({ reply });
     }
 
