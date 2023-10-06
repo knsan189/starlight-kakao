@@ -302,9 +302,11 @@ MessageRouter.post("/", async (req, res) => {
 
     if (cmd === "레이드목록" || cmd === "레이드일정") {
       const response = await RaidApi.getRaidList();
-      let reply = "이번주 레이드 일정입니다 \n\n";
+      let reply = "이번주 레이드 일정입니다 \n";
       response.forEach((raid) => {
-        reply += `${raid.rds_no}. ${raid.rade_title} - ${raid.rade_date} ${raid.rade_time} (${raid.rade_people}/${raid.rade_participants})\n`;
+        reply += "\n";
+        reply += `${raid.rds_no}. ${raid.rade_title}(${raid.rade_participants}/${raid.rade_people})\n`;
+        reply += `출발일정 : ${raid.rade_date} ${raid.rade_time}\n`;
       });
       return res.send({ reply });
     }
